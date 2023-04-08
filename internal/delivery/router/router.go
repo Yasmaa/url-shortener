@@ -6,8 +6,9 @@ import (
 )
 
 func SetupRoutes(mux *http.ServeMux, handler handler.AppHandler) {
-	// TODO : implement routes
-
+	mux.HandleFunc("/ping", handler.Ping)
+	mux.HandleFunc("/encode", handler.Encode)
+	mux.HandleFunc("/decode", handler.Decode)
 }
 
 func NewRouter(handler handler.AppHandler) *http.ServeMux {
