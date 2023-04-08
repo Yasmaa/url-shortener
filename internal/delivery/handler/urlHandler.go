@@ -73,6 +73,28 @@ func (uh *urlHandler) Encode(w http.ResponseWriter, r *http.Request) {
 func (uh *urlHandler) Decode(w http.ResponseWriter, r *http.Request) {
 
 	
+	var url domain.AliasRequest
 
+	if err := json.NewDecoder(r.Body).Decode(&url); err != nil {
+		
+		w.WriteHeader(http.StatusBadRequest)
+		message, _ := json.Marshal(map[string]string{"message": "bad request"})
+		w.Write(message)
+		return
+	}
+
+	res, err := uh.UrlService.Decode(url.Alias)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusInternalServerError)
+		message, _ := json.Marshal(map[string]string{"message": "internal server error"})
+		w.Write(message)
+		return
+
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
 	
 }

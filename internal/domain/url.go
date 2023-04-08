@@ -11,3 +11,7 @@ type Url struct {
 type URLRequest struct {
 	LongUrl  string `json:"long_url""`
 }
+
+type AliasRequest struct {
+	Alias  string `json:"alias""`
+}
