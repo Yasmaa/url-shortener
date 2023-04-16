@@ -1,8 +1,7 @@
 package domain
 
-type Url struct {
+type URL struct {
 	LongUrl  string `json:"long_url""`
-	ShortUrl string `json:"short_url"`
 	Alias string `json:"alias"`
 
 }

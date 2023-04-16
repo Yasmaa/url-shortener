@@ -10,7 +10,7 @@ import (
 type UrlRepository interface {
 	Get(alias string) (string, error_utils.MessageErr)
 	Exists(alias string) (bool, error_utils.MessageErr)
-	Store(url, alias string) (*domain.Url, error_utils.MessageErr)
+	Store(url, alias string) (*domain.URL, error_utils.MessageErr)
 }
 
 type urlRepository struct {
@@ -33,20 +33,18 @@ func (ur *urlRepository) Get(alias string) (string, error_utils.MessageErr) {
 // Exists checks if there is a URL with the requested alias
 func (ur *urlRepository) Exists(alias string) (bool, error_utils.MessageErr) {
 	_, found := ur.db.Urls[alias]
-
+	if found {
+		return found,error_utils.NewBadRequestError("already  exists")
+	}
 	return found, nil
 }
 
 // Store creates a new short URL
-func (ur *urlRepository) Store(url, alias string) (*domain.Url, error_utils.MessageErr) {
-	_, found := ur.db.Urls[alias]
-	if found {
-		return nil,error_utils.NewBadRequestError("already  exists")
-	}
-
+func (ur *urlRepository) Store(url, alias string) (*domain.URL, error_utils.MessageErr) {
+	
 	ur.db.Urls[alias] = url
 
-	res := &domain.Url{
+	res := &domain.URL{
 		LongUrl: url,
 		Alias:   alias}
 	return res, nil
